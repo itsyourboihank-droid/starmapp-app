@@ -54,3 +54,57 @@
   </div>
 
   <script>
+    function generateStarMap() {
+      const loc = document.getElementById('location').value || 'Sydney, Australia';
+      const date = document.getElementById('date').value || '2024-01-01';
+      const templateSelect = document.getElementById('template').value;
+
+      const canvas = document.getElementById('starMap');
+      const ctx = canvas.getContext('2d');
+      const radius = canvas.width / 2;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Try to load template background (won't break if missing)
+      const img = new Image();
+      img.src = `templates/${templateSelect}.jpg`;
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        drawStars();
+      }
+      img.onerror = drawStars; // If template missing, still draw stars
+
+      // Draw stars inside circle
+      function drawStars() {
+        for (let i = 0; i < 500; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const r = Math.random() * radius;
+          const x = canvas.width / 2 + r * Math.cos(angle);
+          const y = canvas.height / 2 + r * Math.sin(angle);
+          const size = Math.random() * 1.8 + 0.5;
+          const brightness = Math.random() * 0.8 + 0.2;
+          ctx.fillStyle = `rgba(255,255,255,${brightness})`;
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+
+        // Overlay text on canvas
+        ctx.fillStyle = "white";
+        ctx.font = "18px Arial";
+        ctx.fillText(`Star Map for ${loc}`, 20, 470);
+        ctx.fillText(`Date: ${date}`, 20, 490);
+
+        // Text below the circle
+        document.getElementById('mapText').innerHTML = `${loc} - ${date}`;
+      }
+    }
+
+    // Generate default map on page load
+    window.onload = generateStarMap;
+  </script>
+</body>
+</html>
