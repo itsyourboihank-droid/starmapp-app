@@ -1,11 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Star Map Test</title>
+  <meta charset="UTF-8">
+  <title>Star Map Generator</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      background: radial-gradient(circle at center, #02010a, #000);
+      color: white;
+      padding: 30px;
+    }
+    canvas { 
+      border-radius: 12px; 
+      margin-top: 20px; 
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+    input, button { 
+      margin: 8px; 
+      padding: 10px; 
+      border-radius: 6px; 
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background: #0070f3; 
+      color: white; 
+      cursor: pointer;
+    }
+    button:hover { background: #0055c2; }
+  </style>
 </head>
-<body style="background:black;color:white;font-family:sans-serif;text-align:center;padding-top:100px;">
-  <h1>✨ Star Map App Placeholder ✨</h1>
-  <p>If you can see this, your site is live!</p>
-</body>
-</html>
+<body>
+  <h1>✨ Your Custom Star Map ✨</h1>
+  <p>Enter a location and date to see your night sky.</p>
+
+  <input id="location" placeholder="e.g. Sydney, Australia">
+  <input id="date" type="date">
+  <button onclick="generateStarMap()">Generate</button>
+
+  <div><canvas id="starMap" width="500" height="500"></canvas></div>
+
+  <script>
+    async function generateStarMap() {
+      const loc = document.getElementById('location').value || 'Sydney, Australia';
+      const date = document.getElementById('date').value || '2024-01-01';
+      const canvas = document.getElementById('starMap');
+      const ctx = canvas.getContext('2d');
+      
+      // Fill background
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw random stars (simulated realistic field)
+      for (let i = 0; i < 500; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const brightness = Math.random();
+        ctx.fillStyle = `rgba(255,255,255,${brightness})`;
+        ctx.beginPath();
+        ctx.arc(x, y, Math.random() * 1.2, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      // Text overlay
+      ctx.fillStyle = "white";
+      ctx.font = "18px Arial";
+      ctx.fillText(`Star Map for ${loc}`, 20, 470);
+      ctx.fillTex
